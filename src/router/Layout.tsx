@@ -1,10 +1,17 @@
-import { Outlet } from "react-router-dom";
+import { Outlet } from 'react-router-dom';
+import NavBar from '../components/common/NavBar';
+import Card from '../components/common/Card';
 
 const Layout = () => {
   return (
-    <main>
-      <Outlet />
-    </main>
+    <>
+      <NavBar />
+      <main className="w-full h-screen grid gap-0">
+        <Card>
+          <Outlet />
+        </Card>
+      </main>
+    </>
   );
 };
 

@@ -1,7 +1,8 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Layout from "./Layout";
-import MainPage from "../pages/MainPage/MainPage";
-import StatisticsPage from "../pages/StatisticsPage/StatisticsPage.tsx";
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import Layout from './Layout';
+import MainPage from '../pages/MainPage/MainPage';
+import StatisticsPage from '../pages/StatisticsPage/StatisticsPage.tsx';
+import { PATH } from '../constants/path.ts';
 
 const Router = () => (
   <RouterProvider
@@ -9,8 +10,8 @@ const Router = () => (
       {
         element: <Layout />,
         children: [
-          { path: '/', element: <MainPage /> },
-          { path: '/statistics', element: <StatisticsPage /> },
+          { path: PATH.MAIN, element: <MainPage /> },
+          { path: PATH.STATISTICS, element: <StatisticsPage /> },
         ],
       },
     ])}

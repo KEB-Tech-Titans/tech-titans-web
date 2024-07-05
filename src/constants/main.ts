@@ -1,4 +1,4 @@
-import uploadImage from '/image.png';
+import uploadImage from '/upload.png';
 
 interface ImageSectionDataType {
   url: string;

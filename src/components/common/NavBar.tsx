@@ -1,10 +1,27 @@
+import { useState } from 'react';
 import { IoMenuOutline } from 'react-icons/io5';
+import MenuList from './MenuList';
+import Logo from '/logo.png';
 
 const NavBar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleOpenMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
+
   return (
-    <header className="bg-white w-full p-4 h-32 flex justify-between items-center">
-      <img src="" alt="logo" className="w-64 h-24 object-cover border" />
-      <IoMenuOutline className="size-14 relative" />
+    <header className="px-48 relative w-full py-4 h-32 flex justify-between items-center">
+      <img src={Logo} alt="logo" className="w-96 h-24 object-cover border" />
+      <button onClick={handleOpenMenu}>
+        <IoMenuOutline className="size-14 relative" />
+      </button>
+
+      {isOpen && <MenuList onClose={closeMenu} />}
     </header>
   );
 };

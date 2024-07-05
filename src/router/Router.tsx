@@ -1,7 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Layout from "./Layout";
 import MainPage from "../pages/MainPage/MainPage";
-import StatisticsPage from "../pages/StatisticsPage/StatisticsPage";
+import StatisticsPage from "../pages/StatisticsPage/StatisticsPage.tsx";
 
 const Router = () => (
   <RouterProvider
@@ -10,7 +10,7 @@ const Router = () => (
         element: <Layout />,
         children: [
           { path: '/', element: <MainPage /> },
-          { path: '/3', element: <StatisticsPage /> },
+          { path: '/statistics', element: <StatisticsPage /> },
         ],
       },
     ])}

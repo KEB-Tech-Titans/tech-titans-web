@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import NavBar from '../components/common/NavBar';
 import Card from '../components/common/Card';
+import '../styles/index.css'
 
 const Layout: React.FC = () => {
   return (

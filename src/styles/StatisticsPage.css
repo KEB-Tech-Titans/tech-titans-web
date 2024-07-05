@@ -67,7 +67,7 @@
   align-items: center;
   justify-content: center;
   padding-right: 10px;
-  overflow: visible;
+  overflow: visible; /* 차트가 잘리지 않도록 오버플로우를 보이게 설정 */
 }
 
 .table-container {

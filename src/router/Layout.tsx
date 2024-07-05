@@ -1,14 +1,17 @@
 import { Outlet } from 'react-router-dom';
 import NavBar from '../components/common/NavBar';
 import Card from '../components/common/Card';
+import '../styles/index.css'
 
-const Layout = () => {
+const Layout: React.FC = () => {
   return (
     <>
       <NavBar />
       <main className="w-full h-screen grid gap-0">
         <Card>
-          <Outlet />
+          <div className="scrollable-container">
+            <Outlet />
+          </div>
         </Card>
       </main>
     </>

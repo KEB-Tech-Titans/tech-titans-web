@@ -1,0 +1,128 @@
+.statistics-page {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.statistics-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.total-devices {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.total-devices h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.chart-section, .line-chart-section {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.chart-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: normal;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.chart-title::before {
+  content: "■ ";
+  margin-right: 8px;
+  color: #333;
+}
+
+.statistics-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  position: relative;
+}
+
+.statistics-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background-color: #ddd;
+}
+
+.chart {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-right: 10px;
+  overflow: visible; /* 차트가 잘리지 않도록 오버플로우를 보이게 설정 */
+}
+
+.table-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-container th, .table-container td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.table-container th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.table-container td {
+  text-align: center;
+}
+
+.line-chart-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.line-chart-section .chart-title {
+  margin-top: 40px;
+}
+
+.scrollable-container {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid #ddd;
+}
+
+.scrollable-container::-webkit-scrollbar {
+  width: 12px;
+}
+
+.scrollable-container::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+}
+
+.scrollable-container::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}

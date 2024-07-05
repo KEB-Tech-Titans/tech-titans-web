@@ -7,8 +7,9 @@ const MainPage: React.FC = () => {
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <div className="flex flex-col mt-4 space-y-8">
-        {IMAGE_SECTION_DATA.map((data) => (
+        {IMAGE_SECTION_DATA.map((data, index) => (
           <ImageSection
+            key={index}
             url={data.url}
             alt={data.alt}
             descriptions={data.descriptions}

@@ -8,8 +8,8 @@ export const fetchTotalDevices = async (): Promise<number> => {
 export const fetchScreenDamageData = async (): Promise<{ date: string; noDamage: number; gradeA: number; gradeB: number; gradeC: number }[]> => {
   // 실제 API 호출 대신 가상의 데이터 반환
   return [
-    { date: '2023-07-01', noDamage: 5, gradeA: 1, gradeB: 2, gradeC: 3 },
-    { date: '2023-07-02', noDamage: 6, gradeA: 2, gradeB: 1, gradeC: 4 },
-    { date: '2023-07-03', noDamage: 4, gradeA: 3, gradeB: 2, gradeC: 5 },
+    { date: '2024-07-01', noDamage: 5, gradeA: 1, gradeB: 2, gradeC: 3 },
+    { date: '2024-07-02', noDamage: 6, gradeA: 2, gradeB: 1, gradeC: 4 },
+    { date: '2024-07-03', noDamage: 4, gradeA: 3, gradeB: 2, gradeC: 5 },
   ];
 };

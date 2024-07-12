@@ -2,6 +2,7 @@ import React from 'react';
 import ImageSection from '../../components/Main/ImageSection';
 import { IMAGE_SECTION_DATA } from '../../constants/main';
 import NavigateButtons from '../../components/Main/NavigateButtons';
+import '../../styles/scroll.css';
 
 const MainPage: React.FC = () => {
   return (

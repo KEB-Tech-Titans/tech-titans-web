@@ -38,43 +38,43 @@ const StatisticsPage: React.FC = () => {
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <div className="text-center mb-8">
-        <h1 className="text-2xl font-bold text-gray-800 mb-5">통계 대시보드</h1>
+        <h1 className="text-2xl font-bold text-gray-800 mb-2">통계 대시보드</h1>
         <h2 className="text-xl font-bold text-gray-800">총 검사한 기기: {totalDevices}대</h2>
       </div>
       <div className="mb-8">
-        <h2 className="flex items-center justify-center text-xl text-gray-800 mb-5">
+        <h2 className="text-center text-xl text-gray-800 mb-5">
           <span className="text-gray-800 mr-2">■</span>등급별 양품 및 불량품 수
         </h2>
-        <div className="bg-white p-5 rounded-lg shadow">
-          <div className="flex justify-between items-stretch relative overflow-visible">
-            <div className="flex-1 flex flex-col items-center justify-center pr-2 overflow-visible">
-              <PieChartComponent data={screenDamageData} />
-            </div>
-            <div className="flex-1 flex items-center pl-2 z-10"> {/* z-index를 조정하여 겹침 방지 */}
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr>
-                    <th className="border border-gray-300 p-2 bg-gray-100 font-bold">등급</th>
-                    <th className="border border-gray-300 p-2 bg-gray-100 font-bold">수량</th>
+        <div className="bg-white p-5 rounded-lg shadow flex flex-col md:flex-row">
+          <div className="flex-1 flex flex-col items-center justify-center pr-2 overflow-visible">
+            <PieChartComponent data={screenDamageData} />
+          </div>
+          <div className="flex-1 flex items-center pl-2">
+            <table className="w-full border-collapse text-center">
+              <thead>
+                <tr>
+                  <th className="border border-gray-300 p-2 bg-gray-100 font-bold">등급</th>
+                  <th className="border border-gray-300 p-2 bg-gray-100 font-bold">수량</th>
+                </tr>
+              </thead>
+              <tbody>
+                {screenDamageData.map((item) => (
+                  <tr key={item.name}>
+                    <td className="border border-gray-300 p-2">{item.name}</td>
+                    <td className="border border-gray-300 p-2">{item.value}</td>
                   </tr>
-                </thead>
-                <tbody>
-                  {screenDamageData.map((item) => (
-                    <tr key={item.name}>
-                      <td className="border border-gray-300 p-2 text-center">{item.name}</td>
-                      <td className="border border-gray-300 p-2 text-center">{item.value}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-      <div className="bg-white p-5 rounded-lg shadow mt-10">
-        <h2 className="flex items-center justify-center text-xl text-gray-800 mb-5">
+      <div className="text-center mb-8">
+        <h2 className="text-center text-xl text-gray-800 mb-5">
           <span className="text-gray-800 mr-2">■</span>날짜별 불량률
         </h2>
+      </div>
+      <div className="bg-white p-5 rounded-lg shadow">
         <div className="flex items-center justify-center">
           <LineChartComponent data={lineChartData} />
         </div>

@@ -37,7 +37,7 @@ const PieChartComponent: React.FC<PieChartComponentProps> = ({
           cy={200}
           labelLine={false}
           label={({ name, value, percent }) =>
-            `${name} 등급: ${value} (${(percent * 100).toFixed(0)}%)`
+            `${name}: ${value} (${(percent * 100).toFixed(0)}%)`
           }
           outerRadius={80}
           fill="#8884d8"
@@ -59,7 +59,7 @@ const PieChartComponent: React.FC<PieChartComponentProps> = ({
               className={`size-5 ${COLORS[index % COLORS.length]} mr-1`}
             ></div>
             <span className={`${TEXT_COLORS[index % TEXT_COLORS.length]}`}>
-              {item.name} 등급
+              {item.name}
             </span>
           </div>
         ))}

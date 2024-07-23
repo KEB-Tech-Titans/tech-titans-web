@@ -6,7 +6,7 @@ const StatisticTable = ({ data }: { data: damageData }) => {
       <thead>
         <tr>
           <th className="border border-gray-300 p-2 bg-gray-100 font-bold">
-            등급
+            항목 {/* 기존 등급을 항목으로 변경 */}
           </th>
           <th className="border border-gray-300 p-2 bg-gray-100 font-bold">
             수량
@@ -16,7 +16,7 @@ const StatisticTable = ({ data }: { data: damageData }) => {
       <tbody>
         {data.map((item) => (
           <tr key={item.name}>
-            <td className="border border-gray-300 p-2">{item.name} 등급</td>
+            <td className="border border-gray-300 p-2">{item.name}</td> {/* 기존 등급을 item.name으로 변경 */}
             <td className="border border-gray-300 p-2">{item.value}</td>
           </tr>
         ))}

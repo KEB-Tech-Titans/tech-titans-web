@@ -26,26 +26,25 @@ const StatisticsPage: React.FC = () => {
       // 데이터를 변환하여 사용할 수 있도록 처리
       const transformedData = damageData.map(item => ({
         date: item.date,
-        noDamage: item.noDamage,
+        blackSpot: item.noDamage,
         oil: item.oil,
         scratch: item.scratch,
         stain: item.stain,
+        defectRate: ((item.oil + item.scratch + item.stain) /
+          (item.noDamage + item.oil + item.scratch + item.stain)) * 100
       }));
 
       // 전체 불량률 계산
       const overallDefectRateData = transformedData.map(item => ({
         date: item.date,
-        defectRate:
-          ((item.oil + item.scratch + item.stain) /
-            (item.noDamage + item.oil + item.scratch + item.stain)) *
-          100,
+        defectRate: item.defectRate,
       }));
 
       // 화면에 표시할 데이터 설정
       setScreenDamageData([
         {
-          name: 'No Damage',
-          value: transformedData.reduce((acc, cur) => acc + cur.noDamage, 0),
+          name: 'Black Spot',
+          value: transformedData.reduce((acc, cur) => acc + cur.blackSpot, 0),
         },
         {
           name: 'Oil',
@@ -63,19 +62,7 @@ const StatisticsPage: React.FC = () => {
 
       setTotalDevices(total);
       setOverallDefectRateData(overallDefectRateData);
-      setLineChartData(
-        transformedData.map((item) => ({
-          date: item.date,
-          noDamage: item.noDamage,
-          oil: item.oil,
-          scratch: item.scratch,
-          stain: item.stain,
-          defectRate:
-            ((item.oil + item.scratch + item.stain) /
-              (item.noDamage + item.oil + item.scratch + item.stain)) *
-            100,
-        }))
-      );
+      setLineChartData(transformedData);
     } catch (error) {
       console.error('Error fetching data:', error);
     }

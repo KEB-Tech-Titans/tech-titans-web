@@ -4,7 +4,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 // LineChartComponent의 인터페이스 정의
 interface LineChartData {
   date: string;
-  noDamage: number;
+  blackSpot: number;
   oil: number; // 기존 gradeA를 oil로 변경
   scratch: number; // 기존 gradeB를 scratch로 변경
   stain: number; // 기존 gradeC를 stain으로 변경
@@ -25,11 +25,9 @@ const LineChartComponent: React.FC<LineChartComponentProps> = ({ data }) => {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Line type="monotone" dataKey="noDamage" stroke="#8884d8" name="No Damage" />
         <Line type="monotone" dataKey="oil" stroke="#82ca9d" name="Oil" /> {/* 기존 등급 A를 오일로 변경 */}
         <Line type="monotone" dataKey="scratch" stroke="#ffc658" name="Scratch" /> {/* 기존 등급 B를 스크래치로 변경 */}
         <Line type="monotone" dataKey="stain" stroke="#ff7300" name="Stain" /> {/* 기존 등급 C를 얼룩으로 변경 */}
-        <Line type="monotone" dataKey="defectRate" stroke="#ff0000" name="Defect Rate (%)" dot={false} />
       </LineChart>
     </ResponsiveContainer>
   );

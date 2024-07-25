@@ -1,81 +1,51 @@
 import React, { useState, useEffect } from 'react';
-import { fetchScreenDamageData, fetchTotalDevices } from '../../api/api';
-import { damageData, lineChartData, overallDefectRateDataType } from '../../types/statistics';
+import { fetchDefectCount, fetchTotalDevices } from '../../api/api';
+import { damageDataType, lineChartDataType, overallDefectRateDataType } from '../../types/statistics';
 import DefectRateForDate from '../../components/Statistics/DefectRateForDate';
 import DevicesByGrade from '../../components/Statistics/DevicesByGrade';
 import StatisticsHeader from '../../components/Statistics/StatisticsHeader';
 import OverallDefectRateProgressBar from '../../components/Statistics/OverallDefectRateProgressBar';
 
 const StatisticsPage: React.FC = () => {
-  const [screenDamageData, setScreenDamageData] = useState<damageData>([]);
+  const [screenDamageData, setScreenDamageData] = useState<damageDataType[]>([]);
   const [totalDevices, setTotalDevices] = useState<number>(0);
-  const [lineChartData, setLineChartData] = useState<lineChartData>([]);
+  const [lineChartData, setLineChartData] = useState<lineChartDataType[]>([]);
   const [overallDefectRateData, setOverallDefectRateData] = useState<overallDefectRateDataType[]>([]);
+  const [totalDefects, setTotalDefects] = useState<number>(0);
 
   useEffect(() => {
-    fetchData();
+    const today = new Date().toISOString().split('T')[0];
+    fetchData(today);
   }, []);
 
-  const fetchData = async () => {
+  const fetchData = async (date: string) => {
     try {
-      const [damageData, total] = await Promise.all([
-        fetchScreenDamageData(),
-        fetchTotalDevices(),
-      ]);
+      const total = await fetchTotalDevices();
+      const oilCount = await fetchDefectCount('OIL', date);
+      const scratchCount = await fetchDefectCount('SCRATCH', date);
+      const stainCount = await fetchDefectCount('STAIN', date);
 
-      // 데이터를 변환하여 사용할 수 있도록 처리
-      const transformedData = damageData.map(item => ({
-        date: item.date,
-        noDamage: item.noDamage,
-        oil: item.oil,
-        scratch: item.scratch,
-        stain: item.stain,
-      }));
+      const totalDefects = oilCount + scratchCount + stainCount;
+      const overallDefectRate = (totalDefects / total) * 100;
 
-      // 전체 불량률 계산
-      const overallDefectRateData = transformedData.map(item => ({
-        date: item.date,
-        defectRate:
-          ((item.oil + item.scratch + item.stain) /
-            (item.noDamage + item.oil + item.scratch + item.stain)) *
-          100,
-      }));
+      const transformedData = {
+        date,
+        oil: oilCount,
+        scratch: scratchCount,
+        stain: stainCount,
+        defectRate: overallDefectRate,
+      };
 
-      // 화면에 표시할 데이터 설정
       setScreenDamageData([
-        {
-          name: 'No Damage',
-          value: transformedData.reduce((acc, cur) => acc + cur.noDamage, 0),
-        },
-        {
-          name: 'Oil',
-          value: transformedData.reduce((acc, cur) => acc + cur.oil, 0),
-        },
-        {
-          name: 'Scratch',
-          value: transformedData.reduce((acc, cur) => acc + cur.scratch, 0),
-        },
-        {
-          name: 'Stain',
-          value: transformedData.reduce((acc, cur) => acc + cur.stain, 0),
-        },
+        { name: 'Oil', value: oilCount },
+        { name: 'Scratch', value: scratchCount },
+        { name: 'Stain', value: stainCount },
       ]);
 
       setTotalDevices(total);
-      setOverallDefectRateData(overallDefectRateData);
-      setLineChartData(
-        transformedData.map((item) => ({
-          date: item.date,
-          noDamage: item.noDamage,
-          oil: item.oil,
-          scratch: item.scratch,
-          stain: item.stain,
-          defectRate:
-            ((item.oil + item.scratch + item.stain) /
-              (item.noDamage + item.oil + item.scratch + item.stain)) *
-            100,
-        }))
-      );
+      setTotalDefects(totalDefects);
+      setOverallDefectRateData([{ date: transformedData.date, defectRate: overallDefectRate }]);
+      setLineChartData([transformedData]);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -84,7 +54,7 @@ const StatisticsPage: React.FC = () => {
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <StatisticsHeader totalDevices={totalDevices} />
-      <OverallDefectRateProgressBar data={overallDefectRateData} />
+      <OverallDefectRateProgressBar data={overallDefectRateData} totalDefects={totalDefects} />
       <DevicesByGrade data={screenDamageData} />
       <DefectRateForDate data={lineChartData} />
     </div>

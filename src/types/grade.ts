@@ -1,4 +1,4 @@
-export type gradeType = 'No Damage' | 'Oil' | 'Scratch' | 'Stain';
+export type gradeType = 'Oil' | 'Scratch' | 'Stain';
 
 export type gradeInfoType = { grade: gradeType; description: string };
 

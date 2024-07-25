@@ -6,7 +6,7 @@ import '../../styles/scroll.css';
 
 const MainPage: React.FC = () => {
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className="p-6 bg-gray-100">
       <div className="flex flex-col mt-4 space-y-8">
         {IMAGE_SECTION_DATA.map((data, index) => (
           <ImageSection

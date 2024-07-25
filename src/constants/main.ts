@@ -1,5 +1,5 @@
-import uploadImage from '/upload.png';
-
+import defectDetailsPageImage from '/defectDetailsPage.png';
+import statisticsPageImage from '/statisticsPage.png';
 interface ImageSectionDataType {
   url: string;
   alt: string;
@@ -8,22 +8,24 @@ interface ImageSectionDataType {
 
 export const IMAGE_SECTION_DATA: ImageSectionDataType[] = [
   {
-    url: uploadImage,
-    alt: '이미지 1',
+    url: defectDetailsPageImage,
+    alt: '결함상품 상세확인 페이지 이미지',
     descriptions: [
-      '이미지 업로드 및 검사',
-      '이미지를 업로드하고 해당 이미지를 Yolo를 통해 인식하여 스마트폰인지 아닌지를 파악한다.',
-      '스마트폰이 맞다면, 해당 스마트폰의 스크래치 여부와 정도를 파악하여 등급을 나눈다.',
-      '해당 검사결과를 결과 화면으로 보여준다.',
+      '결함상품 상세확인',
+      '결함종류와 날짜별 필터링 검색 기능을 통해 쉽고 빠르게 원하는 정보에 접근 가능',
+      '결함상품으로 분류되었던 데이터를 한눈에 확인 가능',
+      '데이터에는 결함상품의 결함종류 및 갯수 지표와 결함 심각도를 확인 가능',
+      '결함 심각도 = log{(인식된 결함 영역의 넓이 / 전체 핸드폰 액정 영역의 넓이) x 100}',
     ],
   },
   {
-    url: uploadImage,
-    alt: '이미지 2',
+    url: statisticsPageImage,
+    alt: '통계확인 페이지 이미지',
     descriptions: [
       '통계 확인',
-      '검사를 진행했던 정보를 모아 한눈에 파악하기 쉽도록 통계 수치를 보여준다.',
-      '등급별 퍼센트, 날짜별 불량률 확인 등등이 있을 예정',
+      '전체 불량률 = (불량 발생 건수 / 총 검사 건수) x 100 (단위 : %, 퍼센트)',
+      '결함 종류별 퍼센트 : 결함 종류별 비율을 퍼센트로 나타낸 Pie 차트',
+      '날짜별 불량 추이 : 날짜별 총 불량 퍼센트와 결함 종류별 퍼센트를 나타낸 차트',
     ],
   },
 ];

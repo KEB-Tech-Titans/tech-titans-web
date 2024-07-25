@@ -6,7 +6,7 @@ interface MenuListType {
 }
 
 export const MENU_DATA: MenuListType[] = [
-  { name: '검사하기', path: PATH.CHECK },
+  { name: '메인페이지', path: PATH.MAIN },
+  { name: '결함상품 상세분석', path: PATH.CHECK },
   { name: '통계 확인하기', path: PATH.STATISTICS },
-  { name: '결과 공유/출력하기', path: PATH.MAIN },
 ];

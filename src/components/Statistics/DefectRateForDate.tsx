@@ -1,3 +1,4 @@
+import React from 'react';
 import { lineChartData } from '../../types/statistics';
 import LineChartComponent from './LineChart';
 import DefectRateChartComponent from './DefectRateLineChart';

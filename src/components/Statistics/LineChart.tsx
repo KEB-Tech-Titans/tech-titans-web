@@ -12,7 +12,7 @@ interface LineChartData {
 }
 
 interface LineChartComponentProps {
-  data: LineChartData[];
+  data: lineChartData;
 }
 
 // LineChartComponent 컴포넌트 정의

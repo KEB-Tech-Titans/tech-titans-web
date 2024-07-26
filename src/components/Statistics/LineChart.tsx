@@ -1,18 +1,18 @@
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-// LineChartComponent의 인터페이스 정의
+// LineChartData의 인터페이스 정의 (하나의 데이터 객체)
 interface LineChartData {
   date: string;
-  blackSpot: number;
   oil: number; // 기존 gradeA를 oil로 변경
   scratch: number; // 기존 gradeB를 scratch로 변경
   stain: number; // 기존 gradeC를 stain으로 변경
   defectRate?: number;
 }
 
+// LineChartComponentProps의 인터페이스 정의 (데이터 배열)
 interface LineChartComponentProps {
-  data: lineChartData;
+  data: LineChartData[];
 }
 
 // LineChartComponent 컴포넌트 정의

@@ -5,6 +5,7 @@ import DefectRateForDate from '../../components/Statistics/DefectRateForDate';
 import DevicesByGrade from '../../components/Statistics/DevicesByGrade';
 import StatisticsHeader from '../../components/Statistics/StatisticsHeader';
 import OverallDefectRateProgressBar from '../../components/Statistics/OverallDefectRateProgressBar';
+import DateDropdown from '../../components/Statistics/DateDropdown';
 
 const StatisticsPage: React.FC = () => {
   const [screenDamageData, setScreenDamageData] = useState<damageDataType[]>([]);
@@ -51,9 +52,19 @@ const StatisticsPage: React.FC = () => {
     }
   };
 
+  const handleDateChange = (year: string, month: string, day: string) => {
+    let date = year;
+    if (month) date += `-${month}`;
+    if (day) date += `-${day}`;
+
+    if (date) fetchData(date);
+    else fetchData(new Date().toISOString().split('T')[0]);
+  };
+
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <StatisticsHeader totalDevices={totalDevices} />
+      <DateDropdown onDateChange={handleDateChange} />
       <OverallDefectRateProgressBar data={overallDefectRateData} totalDefects={totalDefects} />
       <DevicesByGrade data={screenDamageData} />
       <DefectRateForDate data={lineChartData} />

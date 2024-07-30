@@ -1,9 +1,9 @@
-// components/Statistics/DateDropdown.tsx
 import React, { useState, useEffect } from 'react';
 import Select, { SingleValue } from 'react-select';
+import { fetchDataForDate } from '../../api/api';
 
 interface DateDropdownProps {
-  onDateChange: (year: string, month: string, day: string) => void;
+  onDateChange: (year: string | null, month: string | null, day: string | null) => void;
 }
 
 const DateDropdown: React.FC<DateDropdownProps> = ({ onDateChange }) => {
@@ -13,39 +13,45 @@ const DateDropdown: React.FC<DateDropdownProps> = ({ onDateChange }) => {
 
   const today = new Date();
   const currentYear = today.getFullYear();
-  const currentMonth = today.getMonth() + 1; // 0-indexed
+  const currentMonth = today.getMonth() + 1;
 
   const handleYearChange = (selectedOption: SingleValue<{ value: string; label: string }>) => {
     const newYear = selectedOption ? selectedOption.value : '';
     setYear(newYear);
     setMonth('');
     setDay('');
-    onDateChange(newYear, '', '');
+    onDateChange(newYear || null, null, null);
   };
 
   const handleMonthChange = (selectedOption: SingleValue<{ value: string; label: string }>) => {
     const newMonth = selectedOption ? selectedOption.value : '';
     setMonth(newMonth);
     setDay('');
-    onDateChange(year, newMonth, '');
+    onDateChange(year || null, newMonth || null, null);
   };
 
   const handleDayChange = (selectedOption: SingleValue<{ value: string; label: string }>) => {
     const newDay = selectedOption ? selectedOption.value : '';
     setDay(newDay);
-    onDateChange(year, month, newDay);
+    onDateChange(year || null, month || null, newDay || null);
   };
 
-  const handleSearch = () => {
-    onDateChange(year, month, day);
+  const handleSearch = async () => {
+    onDateChange(year || null, month || null, day || null);
+    try {
+      const data = await fetchDataForDate(year || null, month || null, day || null);
+      console.log('Data fetched for selected date:', data);
+      // 필요한 경우 이 데이터를 부모 컴포넌트로 전달하거나 상태를 업데이트할 수 있습니다.
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   };
 
   const handleReset = () => {
-    // 초기 상태로 복구
     setYear('');
     setMonth('');
     setDay('');
-    onDateChange('', '', '');
+    onDateChange(null, null, null);
   };
 
   const renderOptions = (start: number, end: number) => {
@@ -62,7 +68,7 @@ const DateDropdown: React.FC<DateDropdownProps> = ({ onDateChange }) => {
     return renderOptions(1, daysInMonth);
   };
 
-  const years = renderOptions(2000, currentYear);
+  const years = renderOptions(1992, currentYear);
   const months = year ? renderOptions(1, year === `${currentYear}` ? currentMonth : 12) : [];
   const days = year && month ? getValidDays(year, month) : [];
 

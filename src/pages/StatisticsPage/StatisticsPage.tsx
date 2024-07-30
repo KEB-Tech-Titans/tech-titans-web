@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchDefectCount, fetchTotalDevices } from '../../api/api';
+import { fetchDefectCount, fetchTotalDevices, fetchOverallDefectRate } from '../../api/api';
 import { damageDataType, lineChartDataType, overallDefectRateDataType } from '../../types/statistics';
 import DefectRateForDate from '../../components/Statistics/DefectRateForDate';
 import DevicesByGrade from '../../components/Statistics/DevicesByGrade';
@@ -15,22 +15,25 @@ const StatisticsPage: React.FC = () => {
   const [totalDefects, setTotalDefects] = useState<number>(0);
 
   useEffect(() => {
-    const today = new Date().toISOString().split('T')[0];
-    fetchData(today);
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+    const date = today.getDate();
+    fetchData(year, month, date);
   }, []);
 
-  const fetchData = async (date: string) => {
+  const fetchData = async (year: number, month?: number, date?: number) => {
     try {
       const total = await fetchTotalDevices();
-      const oilCount = await fetchDefectCount('OIL', date);
-      const scratchCount = await fetchDefectCount('SCRATCH', date);
-      const stainCount = await fetchDefectCount('STAIN', date);
+      const oilCount = await fetchDefectCount('OIL', year, month, date);
+      const scratchCount = await fetchDefectCount('SCRATCH', year, month, date);
+      const stainCount = await fetchDefectCount('STAIN', year, month, date);
 
       const totalDefects = oilCount + scratchCount + stainCount;
-      const overallDefectRate = (totalDefects / total) * 100;
+      const overallDefectRate = await fetchOverallDefectRate(year, month, date);
 
       const transformedData = {
-        date,
+        date: `${year}-${month}-${date}`,
         oil: oilCount,
         scratch: scratchCount,
         stain: stainCount,
@@ -52,13 +55,16 @@ const StatisticsPage: React.FC = () => {
     }
   };
 
-  const handleDateChange = (year: string, month: string, day: string) => {
-    let date = year;
-    if (month) date += `-${month}`;
-    if (day) date += `-${day}`;
+  const handleDateChange = (year: string | null, month: string | null, day: string | null) => {
+    const y = year ? parseInt(year) : undefined;
+    const m = month ? parseInt(month) : undefined;
+    const d = day ? parseInt(day) : undefined;
 
-    if (date) fetchData(date);
-    else fetchData(new Date().toISOString().split('T')[0]);
+    if (y) fetchData(y, m, d);
+    else {
+      const today = new Date();
+      fetchData(today.getFullYear(), today.getMonth() + 1, today.getDate());
+    }
   };
 
   return (

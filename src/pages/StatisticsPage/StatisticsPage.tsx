@@ -13,27 +13,26 @@ const StatisticsPage: React.FC = () => {
   const [lineChartData, setLineChartData] = useState<lineChartDataType[]>([]);
   const [overallDefectRateData, setOverallDefectRateData] = useState<overallDefectRateDataType[]>([]);
   const [totalDefects, setTotalDefects] = useState<number>(0);
+  const [isDataFetched, setIsDataFetched] = useState<boolean>(true); // 초기 마운트 시 전체 데이터를 표시하도록 설정
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth() + 1;
-    const date = today.getDate();
-    fetchData(year, month, date);
+    fetchData(); // 초기 상태에서 전체 데이터를 가져옴
   }, []);
 
-  const fetchData = async (year: number, month?: number, date?: number) => {
+  const fetchData = async (year?: number, month?: number, date?: number) => {
     try {
-      const total = await fetchTotalDevices();
-      const oilCount = await fetchDefectCount('OIL', year, month, date);
-      const scratchCount = await fetchDefectCount('SCRATCH', year, month, date);
-      const stainCount = await fetchDefectCount('STAIN', year, month, date);
+      setError(null);
+      const total = await fetchTotalDevices(year, month, date);
+      const oilCount = await fetchDefectCount('OIL', year ?? new Date().getFullYear(), month, date);
+      const scratchCount = await fetchDefectCount('SCRATCH', year ?? new Date().getFullYear(), month, date);
+      const stainCount = await fetchDefectCount('STAIN', year ?? new Date().getFullYear(), month, date);
 
       const totalDefects = oilCount + scratchCount + stainCount;
-      const overallDefectRate = await fetchOverallDefectRate(year, month, date);
+      const overallDefectRate = await fetchOverallDefectRate(year ?? new Date().getFullYear(), month, date);
 
       const transformedData = {
-        date: `${year}-${month}-${date}`,
+        date: `${year ?? 'All'}-${month ?? 'All'}-${date ?? 'All'}`,
         oil: oilCount,
         scratch: scratchCount,
         stain: stainCount,
@@ -50,8 +49,11 @@ const StatisticsPage: React.FC = () => {
       setTotalDefects(totalDefects);
       setOverallDefectRateData([{ date: transformedData.date, defectRate: overallDefectRate }]);
       setLineChartData([transformedData]);
+      setIsDataFetched(true);
     } catch (error) {
       console.error('Error fetching data:', error);
+      setError('데이터를 가져오는 중 오류가 발생했습니다. 네트워크 상태를 확인하세요.');
+      setIsDataFetched(false);
     }
   };
 
@@ -60,20 +62,31 @@ const StatisticsPage: React.FC = () => {
     const m = month ? parseInt(month) : undefined;
     const d = day ? parseInt(day) : undefined;
 
-    if (y) fetchData(y, m, d);
-    else {
-      const today = new Date();
-      fetchData(today.getFullYear(), today.getMonth() + 1, today.getDate());
-    }
+    fetchData(y, m, d);
+  };
+
+  const handleReset = () => {
+    setScreenDamageData([]);
+    setTotalDevices(0);
+    setLineChartData([]);
+    setOverallDefectRateData([]);
+    setTotalDefects(0);
+    setIsDataFetched(false);
+    fetchData(); // 전체 데이터를 다시 가져옴
   };
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      <StatisticsHeader totalDevices={totalDevices} />
-      <DateDropdown onDateChange={handleDateChange} />
-      <OverallDefectRateProgressBar data={overallDefectRateData} totalDefects={totalDefects} />
-      <DevicesByGrade data={screenDamageData} />
-      <DefectRateForDate data={lineChartData} />
+      <DateDropdown onDateChange={handleDateChange} onReset={handleReset} />
+      {error && <div className="text-red-500">{error}</div>}
+      {isDataFetched && (
+        <>
+          <StatisticsHeader totalDevices={totalDevices} />
+          <OverallDefectRateProgressBar data={overallDefectRateData} totalDefects={totalDefects} />
+          <DevicesByGrade data={screenDamageData} />
+          <DefectRateForDate data={lineChartData} />
+        </>
+      )}
     </div>
   );
 };

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Select, { SingleValue } from 'react-select';
-import { fetchDataForDate } from '../../api/api';
 
 interface DateDropdownProps {
   onDateChange: (year: string | null, month: string | null, day: string | null) => void;
+  onReset: () => void;
 }
 
-const DateDropdown: React.FC<DateDropdownProps> = ({ onDateChange }) => {
+const DateDropdown: React.FC<DateDropdownProps> = ({ onDateChange, onReset }) => {
   const [year, setYear] = useState<string>('');
   const [month, setMonth] = useState<string>('');
   const [day, setDay] = useState<string>('');
@@ -20,38 +20,28 @@ const DateDropdown: React.FC<DateDropdownProps> = ({ onDateChange }) => {
     setYear(newYear);
     setMonth('');
     setDay('');
-    onDateChange(newYear || null, null, null);
   };
 
   const handleMonthChange = (selectedOption: SingleValue<{ value: string; label: string }>) => {
     const newMonth = selectedOption ? selectedOption.value : '';
     setMonth(newMonth);
     setDay('');
-    onDateChange(year || null, newMonth || null, null);
   };
 
   const handleDayChange = (selectedOption: SingleValue<{ value: string; label: string }>) => {
     const newDay = selectedOption ? selectedOption.value : '';
     setDay(newDay);
-    onDateChange(year || null, month || null, newDay || null);
   };
 
-  const handleSearch = async () => {
+  const handleSearch = () => {
     onDateChange(year || null, month || null, day || null);
-    try {
-      const data = await fetchDataForDate(year || null, month || null, day || null);
-      console.log('Data fetched for selected date:', data);
-      // 필요한 경우 이 데이터를 부모 컴포넌트로 전달하거나 상태를 업데이트할 수 있습니다.
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
   };
 
   const handleReset = () => {
     setYear('');
     setMonth('');
     setDay('');
-    onDateChange(null, null, null);
+    onReset();
   };
 
   const renderOptions = (start: number, end: number) => {
@@ -80,7 +70,6 @@ const DateDropdown: React.FC<DateDropdownProps> = ({ onDateChange }) => {
   useEffect(() => {
     if (year && month && day && isFutureDate(year, month, day)) {
       setDay('');
-      onDateChange(year, month, '');
     }
   }, [year, month, day]);
 

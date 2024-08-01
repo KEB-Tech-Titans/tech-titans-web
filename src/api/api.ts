@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://172.16.218.246:8520';
+const API_BASE_URL = 'http://172.16.230.122:8520';
 
 export const fetchTotalDevices = async (year?: number, month?: number, date?: number): Promise<number> => {
   try {
@@ -55,7 +55,7 @@ export const fetchDataForDate = async (year: string | null, month: string | null
     if (month) params.append('month', month);
     if (day) params.append('date', day);
 
-    const response = await axios.get(`${API_BASE_URL}/inspection/count/defect`, { params });
+    const response = await axios.get(`${API_BASE_URL}/inspection/count/defect/date`, { params });
     return response.data;
   } catch (error) {
     console.error('Error fetching data for date:', error);

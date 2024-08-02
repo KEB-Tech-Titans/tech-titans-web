@@ -60,12 +60,12 @@ const StatisticsPage: React.FC = () => {
     try {
       setError(null);
       const total = await fetchTotalDevices(year, month, date);
-      const oilCount = await fetchDefectCount('OIL', year ?? new Date().getFullYear(), month, date);
-      const scratchCount = await fetchDefectCount('SCRATCH', year ?? new Date().getFullYear(), month, date);
-      const stainCount = await fetchDefectCount('STAIN', year ?? new Date().getFullYear(), month, date);
+      const oilCount = await fetchDefectCount('OIL', year, month, date);
+      const scratchCount = await fetchDefectCount('SCRATCH', year, month, date);
+      const stainCount = await fetchDefectCount('STAIN', year, month, date);
   
       
-      const overallDefectRate = await fetchOverallDefectRate(year ?? new Date().getFullYear(), month, date);
+      const overallDefectRate = await fetchOverallDefectRate(year, month, date);
       const totalDefects = Math.floor((overallDefectRate / 100) * total); //임시방편, 추가 수정 필요
       const defectData = await fetchDataForDate(year ? year.toString() : null, month ? month.toString() : null, date ? date.toString() : null);
   
@@ -86,7 +86,7 @@ const StatisticsPage: React.FC = () => {
   
       setTotalDevices(total);
       setTotalDefects(totalDefects);
-      setOverallDefectRateData([{ date: new Date().getFullYear().toString(), defectRate: overallDefectRate }]); // 연도만 표시
+      setOverallDefectRateData([{ date: new Date().toString(), defectRate: overallDefectRate }]); // 연도만 표시
       setLineChartData(aggregatedData);
       setIsDataFetched(true);
     } catch (error) {

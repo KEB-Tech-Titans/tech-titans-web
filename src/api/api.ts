@@ -17,7 +17,7 @@ export const fetchTotalDevices = async (year?: number, month?: number, date?: nu
   }
 };
 
-export const fetchDefectCount = async (type: string, year: number, month?: number, date?: number): Promise<number> => {
+export const fetchDefectCount = async (type: string, year?: number, month?: number, date?: number): Promise<number> => {
   try {
     let url = `${API_BASE_URL}/inspection/count/defect?defectType=${type}`;
     if (year) url += `&year=${year}`;
@@ -33,7 +33,7 @@ export const fetchDefectCount = async (type: string, year: number, month?: numbe
   }
 };
 
-export const fetchOverallDefectRate = async (year: number, month?: number, date?: number): Promise<number> => {
+export const fetchOverallDefectRate = async (year?: number, month?: number, date?: number): Promise<number> => {
   try {
     let url = `${API_BASE_URL}/inspection/defectRate`;
     if (year) url += `?year=${year}`;

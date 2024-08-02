@@ -64,8 +64,9 @@ const StatisticsPage: React.FC = () => {
       const scratchCount = await fetchDefectCount('SCRATCH', year ?? new Date().getFullYear(), month, date);
       const stainCount = await fetchDefectCount('STAIN', year ?? new Date().getFullYear(), month, date);
   
-      const totalDefects = oilCount + scratchCount + stainCount;
+      
       const overallDefectRate = await fetchOverallDefectRate(year ?? new Date().getFullYear(), month, date);
+      const totalDefects = Math.floor((overallDefectRate / 100) * total); //임시방편, 추가 수정 필요
       const defectData = await fetchDataForDate(year ? year.toString() : null, month ? month.toString() : null, date ? date.toString() : null);
   
       console.log('Fetched defect data:', defectData);

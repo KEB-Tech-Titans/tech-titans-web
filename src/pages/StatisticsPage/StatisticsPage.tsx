@@ -9,16 +9,25 @@ import DateDropdown from '../../components/Statistics/DateDropdown';
 
 // 날짜 형식에 따라 변환하는 함수
 const parseDate = (dateStr: string) => {
-  const [year, month = '01', day = '01'] = dateStr.split('-').map(part => part.padStart(2, '0'));
-  return new Date(`${year}-${month}-${day}`);
+  const [year, month, day] = dateStr.split('-').map(part => part.padStart(2, '0'));
+
+  if (month === undefined || month === '00') {
+    return `${year}`;
+  }
+  
+  if (day === undefined || day === '00') {
+    return `${year}-${month}`;
+  }
+
+  return `${year}-${month}-${day}`;
 };
 
 // 데이터 집계 함수
-const aggregateData = (data: any[], total: number) => {
+const aggregateData = async (data: any[]) => {
   const aggregated: { [key: string]: lineChartDataType } = {};
 
-  data.forEach(item => {
-    const date = parseDate(item.date).toISOString().split('T')[0];
+  for (const item of data) {
+    const date = parseDate(item.date);
     if (!aggregated[date]) {
       aggregated[date] = {
         date,
@@ -35,10 +44,9 @@ const aggregateData = (data: any[], total: number) => {
     } else if (item.defectType === 'STAIN') {
       aggregated[date].stain += item.number;
     }
-    // defectRate 계산
-    const totalDefects = aggregated[date].oil + aggregated[date].scratch + aggregated[date].stain;
-    aggregated[date].defectRate = (totalDefects / total) * 100;
-  });
+    const overallDefectRate = await fetchOverallDefectRate(parseInt(date.substring(0, 4)), date.length > 4 ? parseInt(date.substring(5, 7)) : undefined, date.length > 7 ? parseInt(date.substring(8, 10)) : undefined);
+    aggregated[date].defectRate = overallDefectRate;
+  }
 
   return Object.values(aggregated);
 };
@@ -64,7 +72,6 @@ const StatisticsPage: React.FC = () => {
       const scratchCount = await fetchDefectCount('SCRATCH', year, month, date);
       const stainCount = await fetchDefectCount('STAIN', year, month, date);
   
-      
       const overallDefectRate = await fetchOverallDefectRate(year, month, date);
       const totalDefects = Math.floor((overallDefectRate / 100) * total); //임시방편, 추가 수정 필요
       const defectData = await fetchDataForDate(year ? year.toString() : null, month ? month.toString() : null, date ? date.toString() : null);
@@ -74,7 +81,7 @@ const StatisticsPage: React.FC = () => {
       // defectData의 구조에 따라 배열로 변환
       const defectArray = Array.isArray(defectData) ? defectData : (defectData.data ? defectData.data : []);
   
-      const aggregatedData = aggregateData(defectArray, total);
+      const aggregatedData = await aggregateData(defectArray);
 
       console.log(aggregatedData);
   

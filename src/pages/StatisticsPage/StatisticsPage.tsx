@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { fetchDefectCount, fetchTotalDevices, fetchOverallDefectRate, fetchDataForDate } from '../../api/api';
 import { damageDataType, lineChartDataType, overallDefectRateDataType } from '../../types/statistics';
 import DefectRateForDate from '../../components/Statistics/DefectRateForDate';
@@ -60,40 +60,31 @@ const StatisticsPage: React.FC = () => {
   const [isDataFetched, setIsDataFetched] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async (year?: number, month?: number, date?: number) => {
+  const fetchData = useCallback(async (year?: number, month?: number, date?: number) => {
     try {
       setError(null);
-      const total = await fetchTotalDevices(year, month, date);
-      const oilCount = await fetchDefectCount('OIL', year, month, date);
-      const scratchCount = await fetchDefectCount('SCRATCH', year, month, date);
-      const stainCount = await fetchDefectCount('STAIN', year, month, date);
-  
-      const overallDefectRate = await fetchOverallDefectRate(year, month, date);
-      const totalDefects = Math.floor((overallDefectRate / 100) * total); //임시방편, 추가 수정 필요
-      const defectData = await fetchDataForDate(year ? year.toString() : null, month ? month.toString() : null, date ? date.toString() : null);
-  
-      console.log('Fetched defect data:', defectData);
-  
-      // defectData의 구조에 따라 배열로 변환
+      const [total, oilCount, scratchCount, stainCount, overallDefectRate, defectData] = await Promise.all([
+        fetchTotalDevices(year, month, date),
+        fetchDefectCount('OIL', year, month, date),
+        fetchDefectCount('SCRATCH', year, month, date),
+        fetchDefectCount('STAIN', year, month, date),
+        fetchOverallDefectRate(year, month, date),
+        fetchDataForDate(year ? year.toString() : null, month ? month.toString() : null, date ? date.toString() : null)
+      ]);
+
+      const totalDefects = Math.floor((overallDefectRate / 100) * total); 
       const defectArray = Array.isArray(defectData) ? defectData : (defectData.data ? defectData.data : []);
-  
       const aggregatedData = await aggregateData(defectArray);
 
-      console.log(aggregatedData);
-  
       setScreenDamageData([
         { name: 'Oil', value: oilCount },
         { name: 'Scratch', value: scratchCount },
         { name: 'Stain', value: stainCount },
       ]);
-  
+
       setTotalDevices(total);
       setTotalDefects(totalDefects);
-      setOverallDefectRateData([{ date: new Date().toString(), defectRate: overallDefectRate }]); // 연도만 표시
+      setOverallDefectRateData([{ date: new Date().toString(), defectRate: overallDefectRate }]);
       setLineChartData(aggregatedData);
       setIsDataFetched(true);
     } catch (error) {
@@ -101,17 +92,20 @@ const StatisticsPage: React.FC = () => {
       setError('데이터를 가져오는 중 오류가 발생했습니다. 네트워크 상태를 확인하세요.');
       setIsDataFetched(false);
     }
-  };
-  
-  const handleDateChange = (year: string | null, month: string | null, day: string | null) => {
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const handleDateChange = useCallback((year: string | null, month: string | null, day: string | null) => {
     const y = year ? parseInt(year) : undefined;
     const m = month ? parseInt(month) : undefined;
     const d = day ? parseInt(day) : undefined;
-
     fetchData(y, m, d);
-  };
+  }, [fetchData]);
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     setScreenDamageData([]);
     setTotalDevices(0);
     setLineChartData([]);
@@ -119,7 +113,7 @@ const StatisticsPage: React.FC = () => {
     setTotalDefects(0);
     setIsDataFetched(false);
     fetchData();
-  };
+  }, [fetchData]);
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">

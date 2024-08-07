@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchDefectCount, fetchTotalDevices, fetchOverallDefectRate, fetchDataForDate, fetchDefectiveDeviceCount } from '../../api/api';
+import { fetchDefectCount, fetchTotalDevices, fetchOverallDefectRate, fetchDataForDate, fetchDefectiveDeviceCount, fetchDefectRateForDate } from '../../api/api';
 import { damageDataType, lineChartDataType, overallDefectRateDataType } from '../../types/statistics';
 import DefectRateForDate from '../../components/Statistics/DefectRateForDate';
 import DevicesByGrade from '../../components/Statistics/DevicesByGrade';
@@ -23,7 +23,7 @@ const parseDate = (dateStr: string) => {
 };
 
 // 데이터 집계 함수
-const aggregateData = async (data: any[]) => {
+const aggregateData = async (data: any[], year?: number, month?: number, date?: number) => {
   const aggregated: { [key: string]: lineChartDataType } = {};
 
   for (const item of data) {
@@ -44,9 +44,15 @@ const aggregateData = async (data: any[]) => {
     } else if (item.defectType === 'STAIN') {
       aggregated[date].stain += item.number;
     }
-    const overallDefectRate = await fetchOverallDefectRate(parseInt(date.substring(0, 4)), date.length > 4 ? parseInt(date.substring(5, 7)) : undefined, date.length > 7 ? parseInt(date.substring(8, 10)) : undefined);
-    aggregated[date].defectRate = overallDefectRate;
   }
+
+  const overallDefectRateData = await fetchDefectRateForDate(year, month, date);
+  overallDefectRateData.data.forEach((item: any) => {
+    const date = parseDate(item.date);
+    if (aggregated[date]) {
+      aggregated[date].defectRate = item.defectRate;
+    }
+  });
 
   return Object.values(aggregated);
 };
@@ -80,8 +86,8 @@ const StatisticsPage: React.FC = () => {
       // defectData의 구조에 따라 배열로 변환
       const defectArray = Array.isArray(defectData) ? defectData : (defectData.data ? defectData.data : []);
   
-      const aggregatedData = await aggregateData(defectArray);
-
+      const aggregatedData = await aggregateData(defectArray, year, month, date);
+  
       console.log(aggregatedData);
   
       setScreenDamageData([

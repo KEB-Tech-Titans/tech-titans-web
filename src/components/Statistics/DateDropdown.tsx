@@ -74,7 +74,7 @@ const DateDropdown: React.FC<DateDropdownProps> = ({ onDateChange, onReset }) =>
   }, [year, month, day]);
 
   return (
-    <div className="flex space-x-2 items-center justify-end">
+    <div className="flex space-x-2 items-center justify-end mb-8">
       <Select
         value={years.find(option => option.value === year) || null}
         onChange={handleYearChange}

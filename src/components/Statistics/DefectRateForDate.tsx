@@ -33,11 +33,9 @@ const DefectRateForDate = ({ data }: DefectRateForDateProps) => {
         </h2>
       </div>
       <div className="bg-white p-5 rounded-lg shadow">
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center mb-12">
           <DefectRateChartComponent data={defectRateData} />
         </div>
-      </div>
-      <div className="bg-white p-5 rounded-lg shadow">
         <div className="flex items-center justify-center">
           <LineChartComponent data={data} />
         </div>

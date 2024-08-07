@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://172.16.144.211:8520';
+const API_BASE_URL = 'http://172.16.154.6:8520';
 
 export const fetchTotalDevices = async (year?: number, month?: number, date?: number): Promise<number> => {
   try {
@@ -74,6 +74,21 @@ export const fetchDefectiveDeviceCount = async (year?: number, month?: number, d
     return response.data.data;
   } catch (error) {
     console.error('Error fetching defective dvice count:', error);
+    throw error;
+  }
+};
+
+export const fetchDefectRateForDate = async (year?: number, month?: number, date?: number): Promise<any> => {
+  try {
+    let url = `${API_BASE_URL}/inspection/defectRate/duration`;
+    if (year) url += `?year=${year}`;
+    if (month) url += `&month=${month}`;
+    if (date) url += `&date=${date}`;
+
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data for date:', error);
     throw error;
   }
 };

@@ -3,16 +3,17 @@ import DetailProductCard from '../../components/DefectProductDetail/DetailProduc
 import OptionBar from '../../components/DefectProductDetail/OptionBar';
 import { DateValueType } from 'react-tailwindcss-datepicker';
 import { fetchDefectProducts } from '../../api/defectProductsApi';
+import { defectInfoType } from '../../types/grade';
 
 const PAGE_SIZE = 10;
 
 const DefectProductDetailPage = () => {
   const [value, setValue] = useState<DateValueType>({
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: new Date(), // 기본값 설정
+    endDate: new Date(), // 기본값 설정
   });
   const [filter, setFilter] = useState<string>('결함 이유');
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<defectInfoType[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -24,7 +25,7 @@ const DefectProductDetailPage = () => {
   };
 
   const clickResetButton = () => {
-    setValue({ startDate: null, endDate: null });
+    setValue(null); // 전체 value를 null로 초기화
     setFilter('결함 이유');
     setCurrentPage(1);
   };
@@ -32,8 +33,18 @@ const DefectProductDetailPage = () => {
   const handleSearch = async () => {
     try {
       const result = await fetchDefectProducts({
-        startDate: value.startDate?.toISOString(),
-        endDate: value.endDate?.toISOString(),
+        startDate:
+          value?.startDate instanceof Date
+            ? value.startDate.toISOString()
+            : typeof value?.startDate === 'string'
+            ? new Date(value.startDate).toISOString()
+            : undefined,
+        endDate:
+          value?.endDate instanceof Date
+            ? value.endDate.toISOString()
+            : typeof value?.endDate === 'string'
+            ? new Date(value.endDate).toISOString()
+            : undefined,
         defectType: filter === '결함 이유' ? undefined : filter,
         limit: PAGE_SIZE,
         offset: (currentPage - 1) * PAGE_SIZE,

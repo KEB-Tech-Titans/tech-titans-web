@@ -8,7 +8,7 @@ interface DefectProductParams {
   offset: number;
 }
 
-const API_URL = 'https://api-url.com/defect-products'; // 실제 백엔드 API URL로 변경하세요
+const API_URL = 'https://123123:8520/inspection/detail'; // 실제 백엔드 API URL로 변경하세요
 
 export const fetchDefectProducts = async (params: DefectProductParams) => {
   try {

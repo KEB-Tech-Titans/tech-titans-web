@@ -19,8 +19,8 @@ const PieChartComponent: React.FC<PieChartComponentProps> = ({ data, title }) =>
     <PieChart width={400} height={400}>
       <Pie
         data={data}
-        cx={215}
-        cy={215}
+        cx={195}
+        cy={195}
         labelLine={false}
         label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
         outerRadius={75}

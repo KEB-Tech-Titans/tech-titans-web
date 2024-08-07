@@ -1,4 +1,4 @@
-import { gradeType } from './grade';
+export type gradeType = 'Oil' | 'Scratch' | 'Stain';
 
 export type damageDataType = {
   name: gradeType;
@@ -9,11 +9,15 @@ export type damageData = damageDataType[];
 
 export type lineChartDataType = {
   date: string;
-  noDamage: number;
-  gradeA: number;
-  gradeB: number;
-  gradeC: number;
+  oil: number;
+  scratch: number;
+  stain: number;
   defectRate?: number;
 };
 
 export type lineChartData = lineChartDataType[];
+
+export type overallDefectRateDataType = {
+  date: string;
+  defectRate: number;
+};

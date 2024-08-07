@@ -10,16 +10,22 @@
     "preview": "vite preview"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@tanstack/react-query": "^5.51.21",
     "@tanstack/react-query-devtools": "^5.51.21",
     "axios": "^1.7.3",
+=======
+    "axios": "^1.7.2",
+>>>>>>> 7275653b3da0610183f70c539d78a3ad6f18d3ff
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.2.1",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.24.0",
+    "react-select": "^5.8.0",
     "react-tailwindcss-datepicker": "^1.6.6",
     "recharts": "^2.12.7",
+    "tailwind-scrollbar": "^3.1.0",
     "tailwind-scrollbar-hide": "^1.1.7"
   },
   "devDependencies": {

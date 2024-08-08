@@ -53,7 +53,7 @@ const DefectProductDetailPage = () => {
             : typeof value?.endDate === 'string'
             ? formatDate(new Date(value.endDate))
             : undefined,
-        defectType: filter === '결함 이유' ? undefined : filter,
+        defectType: filter === '결함 이유' ? undefined : filter.toUpperCase(),
         limit: PAGE_SIZE,
         offset: currentPage,
       });

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { API_BASE_URL } from './api';
 
 interface DefectProductParams {
   startDate?: string;
@@ -8,14 +9,13 @@ interface DefectProductParams {
   offset: number;
 }
 
-const API_URL = 'http://172.16.167.20:8520/inspection/detail';
+const DP_API_URL = `${API_BASE_URL}/inspection/detail`;
 
 export const fetchDefectProducts = async (params: DefectProductParams) => {
   try {
-    // 요청 파라미터 확인용 로그
     console.log('Request params:', params);
 
-    const response = await axios.get(API_URL, {
+    const response = await axios.get(DP_API_URL, {
       params: {
         startDate: params.startDate,
         endDate: params.endDate,

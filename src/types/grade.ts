@@ -1,7 +1,6 @@
-export type gradeType = 'Oil' | 'Scratch' | 'Stain';
+export type gradeType = 'OIL' | 'SCRATCH' | 'STAIN';
 
 export type gradeInfoType = { grade: gradeType; description: string };
-
 
 export type DefectTypeInfo = {
   defectType: string;

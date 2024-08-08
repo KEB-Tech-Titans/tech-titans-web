@@ -7,6 +7,7 @@ interface OptionBarProps {
   handleValueChange: (newValue: DateValueType) => void;
   handleChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   clickResetButton: () => void;
+  handleSearch: () => void; // 검색 핸들러 추가
 }
 
 const OptionBar = ({
@@ -16,6 +17,7 @@ const OptionBar = ({
   handleValueChange,
   handleChange,
   clickResetButton,
+  handleSearch, // 검색 핸들러
 }: OptionBarProps) => {
   return (
     <div className="flex justify-between items-center pb-4">
@@ -42,7 +44,10 @@ const OptionBar = ({
           ))}
         </select>
 
-        <button className="w-40 h-11 text-white font-semibold bg-blue-600 rounded-md hover:bg-white hover:text-blue-500 hover:border-2 border-blue-500">
+        <button
+          onClick={handleSearch} // 검색 시작 버튼 클릭 시 handleSearch 호출
+          className="w-40 h-11 text-white font-semibold bg-blue-600 rounded-md hover:bg-white hover:text-blue-500 hover:border-2 border-blue-500"
+        >
           검색 시작
         </button>
       </div>

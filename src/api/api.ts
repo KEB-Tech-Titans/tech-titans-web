@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://172.16.154.6:8520';
+export const API_BASE_URL = 'http://172.16.167.20:8520';
 
 export const fetchTotalDevices = async (year?: number, month?: number, date?: number): Promise<number> => {
   try {

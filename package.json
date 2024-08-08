@@ -10,13 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@tanstack/react-query": "^5.51.21",
     "@tanstack/react-query-devtools": "^5.51.21",
     "axios": "^1.7.3",
-=======
-    "axios": "^1.7.2",
->>>>>>> 7275653b3da0610183f70c539d78a3ad6f18d3ff
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.2.1",

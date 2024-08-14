@@ -83,7 +83,7 @@ const DefectProductDetailPage = () => {
       <OptionBar
         value={value}
         filter={filter}
-        options={['Oil', 'Scratch', 'Stain', 'Black Spot']}
+        options={['Oil', 'Scratch', 'Stain']}
         handleValueChange={handleValueChange}
         handleChange={handleChange}
         clickResetButton={clickResetButton}
